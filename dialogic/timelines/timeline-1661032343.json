@@ -1,0 +1,21 @@
+{
+	"events": [
+		{
+			"character": "character-1661027300.json",
+			"event_id": "dialogic_001",
+			"portrait": "",
+			"text": "Oi eu sou a Emmie"
+		},
+		{
+			"character": "character-1661027300.json",
+			"event_id": "dialogic_001",
+			"portrait": "",
+			"text": "Após me mudar para cá, começei a me sentir observada por todos"
+		}
+	],
+	"metadata": {
+		"dialogic-version": "1.4.4",
+		"file": "timeline-1661032343.json",
+		"name": "timeline-1"
+	}
+}

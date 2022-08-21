@@ -41,35 +41,39 @@ script = ExtResource( 3 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
 margin_right = 581.0
-margin_bottom = 164.0
+margin_bottom = 363.0
 texture = ExtResource( 1 )
 expand = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -226.0
-margin_top = -59.0
-margin_right = -76.0001
-margin_bottom = 53.0
-rect_scale = Vector2( 1.61601, 1.58089 )
+anchor_left = 0.6
+anchor_top = 0.2
+anchor_right = 0.6
+anchor_bottom = 0.8
+margin_right = -104.0
+margin_bottom = -146.4
+rect_scale = Vector2( 2, 2 )
 
 [node name="Label" type="Label" parent="VBoxContainer"]
-margin_right = 149.0
+margin_right = 96.0
 margin_bottom = 15.0
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_fonts/font = ExtResource( 2 )
 text = "Nome do Jogo"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 margin_top = 19.0
-margin_right = 149.0
-margin_bottom = 72.0
+margin_right = 96.0
+margin_bottom = 39.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+margin_top = 43.0
+margin_right = 96.0
+margin_bottom = 96.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
-margin_right = 149.0
+margin_right = 96.0
 margin_bottom = 15.0
 
 [node name="Selector" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
@@ -95,7 +99,7 @@ text = "Iniciar"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
 margin_top = 19.0
-margin_right = 149.0
+margin_right = 96.0
 margin_bottom = 34.0
 
 [node name="Selector" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
@@ -120,7 +124,7 @@ text = "Como Jogar"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
 margin_top = 38.0
-margin_right = 149.0
+margin_right = 96.0
 margin_bottom = 53.0
 
 [node name="Selector" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
