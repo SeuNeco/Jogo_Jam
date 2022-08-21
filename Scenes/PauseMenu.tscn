@@ -1,0 +1,212 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Fonts/Chikarego2.tres" type="DynamicFont" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 6.0
+content_margin_right = 6.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.18, 0.207, 0.279, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.14, 0.161, 0.217, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_left = 6.0
+content_margin_right = 6.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.15, 0.1725, 0.2325, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.41, 0.61, 0.91, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+content_margin_left = 6.0
+content_margin_right = 6.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.15, 0.1725, 0.2325, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.4, 0.4225, 0.4825, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+content_margin_left = 6.0
+content_margin_right = 6.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.15, 0.1725, 0.2325, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.125, 0.14375, 0.19375, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+content_margin_left = 6.0
+content_margin_right = 6.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.15, 0.1725, 0.2325, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.41, 0.61, 0.91, 1 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 30
+
+[sub_resource type="Theme" id=7]
+default_font = SubResource( 6 )
+Button/colors/font_color = Color( 0.8, 0.8075, 0.8275, 1 )
+Button/colors/font_color_disabled = Color( 1, 1, 1, 0.3 )
+Button/colors/font_color_hover = Color( 0.88, 0.8845, 0.8965, 1 )
+Button/colors/font_color_pressed = Color( 0.411765, 0.611765, 0.909804, 1 )
+Button/colors/icon_color_hover = Color( 1.15, 1.15, 1.15, 1 )
+Button/colors/icon_color_pressed = Color( 0.4715, 0.7015, 1.0465, 1 )
+Button/constants/hseparation = 2
+Button/fonts/font = null
+Button/styles/disabled = SubResource( 1 )
+Button/styles/focus = SubResource( 2 )
+Button/styles/hover = SubResource( 3 )
+Button/styles/normal = SubResource( 4 )
+Button/styles/pressed = SubResource( 5 )
+
+[sub_resource type="GDScript" id=8]
+script/source = "extends Control
+
+
+export(Vector2) var _start_position = Vector2(0, -20)
+export(Vector2) var _end_position = Vector2.ZERO
+export(float) var fade_in_duration = 0.3
+export(float) var fade_out_duration = 0.2
+
+onready var center_cont = $ColorRect/CenterContainer
+onready var resume_button = center_cont.get_node(@\"ColorRect/CenterContainer/VBoxContainer/ResumeButton\")
+
+onready var root = get_tree().get_root()
+onready var scene_root = root.get_child(root.get_child_count() - 1)
+onready var tween = $Tween
+
+
+func _ready():
+	hide()
+
+
+func close():
+	get_tree().paused = false
+	# Tween's interpolate_property has these arguments:
+	# (Target object, \"Property:OptionalSubProperty\", From value, To value,
+	# Tween duration, Transition type, Easing type, Optional delay)
+	tween.interpolate_property(self, \"modulate:a\", 1.0, 0.0,
+			fade_out_duration, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.interpolate_property(center_cont, \"rect_position\",
+			_end_position, _start_position, fade_out_duration,
+			Tween.TRANS_CUBIC, Tween.EASE_OUT)
+	tween.start()
+
+
+func open():
+	show()
+	resume_button.grab_focus()
+
+	tween.interpolate_property(self, \"modulate:a\", 0.0, 1.0,
+			fade_in_duration, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.interpolate_property(center_cont, \"rect_position\",
+			_start_position, _end_position, fade_in_duration,
+			Tween.TRANS_CUBIC, Tween.EASE_OUT)
+	tween.start()
+
+
+func _on_ResumeButton_pressed():
+	if not tween.is_active():
+		close()
+
+
+func _on_QuitButton_pressed():
+	scene_root.notification(NOTIFICATION_WM_QUIT_REQUEST)
+	get_tree().quit()
+
+
+func _on_Tween_all_completed():
+	if modulate.a < 0.5:
+		hide()
+"
+
+[node name="PauseMenu" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource( 7 )
+script = SubResource( 8 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.294118 )
+
+[node name="CenterContainer" type="CenterContainer" parent="ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/CenterContainer"]
+margin_left = 140.0
+margin_right = 440.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 300, 200 )
+custom_constants/separation = 6
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ColorRect/CenterContainer/VBoxContainer"]
+margin_top = 33.0
+margin_right = 300.0
+margin_bottom = 48.0
+custom_fonts/font = ExtResource( 3 )
+text = "Pausado"
+align = 1
+valign = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect/CenterContainer/VBoxContainer"]
+margin_top = 54.0
+margin_right = 300.0
+margin_bottom = 74.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="ResumeButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
+margin_left = 60.0
+margin_top = 80.0
+margin_right = 240.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 180, 40 )
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 3 )
+text = "Continuar"
+
+[node name="QuitButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
+margin_left = 60.0
+margin_top = 126.0
+margin_right = 240.0
+margin_bottom = 166.0
+rect_min_size = Vector2( 180, 40 )
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 3 )
+text = "Sair"
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="ready" from="." to="." method="_on_PauseMenu_ready"]
+[connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/ResumeButton" to="." method="_on_ResumeButton_pressed"]
+[connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_all_completed"]
